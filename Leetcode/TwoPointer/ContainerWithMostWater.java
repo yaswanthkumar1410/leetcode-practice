@@ -10,14 +10,21 @@ public class ContainerWithMostWater {
     // ============================================
     // LC 11 — Container With Most Water
     // ============================================
-    // Given n lines (heights), find two lines that together
-    // with the x-axis form a container that holds the most water.
+    // Given n vertical lines at positions 0..n-1 with
+    // heights height[i], find two lines that together
+    // with the x-axis form a container holding the most water.
     //
-    // Area = min(height[left], height[right]) * (right - left)
-    //
-    // O(n) time. Two pointers from ends. Move the shorter one.
+    // Return the maximum amount of water the container can store.
     // ============================================
     static int maxArea(int[] height) {
-        // your code here
+        int maxWater = 0;
+        int left = 0;
+        int right = height.length - 1;
+        while(left < right) {
+            maxWater = Math.max(maxWater, Math.min(height[left], height[right]) * (right - left));
+            if(height[left] < height[right]) left++;
+            else right--; 
+        }
+        return maxWater;
     }
 }
