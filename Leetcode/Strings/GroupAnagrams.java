@@ -26,28 +26,22 @@ public class GroupAnagrams {
     // ============================================
     static List<List<String>> groupAnagrams(String[] strs) {
 
-        HashMap<HashMap<Character, Integer>, List<String>> groupedMap = new HashMap<>();
+        HashMap<String, List<String>> groupedMap = new HashMap<>();
         for(String s : strs) {
-            HashMap<Character, Integer> frequencyCount = getFrequencyCount(s);
             List<String> listOfString = new ArrayList<>();
-            if(groupedMap.containsKey(frequencyCount)) {
-                listOfString = groupedMap.get(frequencyCount);
+            char[] c = s.toCharArray();
+            Arrays.sort(c);
+            String sortedString = Arrays.toString(c);
+            if(groupedMap.containsKey(sortedString)) {
+                listOfString = groupedMap.get(sortedString);
             }
             listOfString.add(s);
-            groupedMap.put(frequencyCount, listOfString);
+            groupedMap.put(sortedString, listOfString);
         }
         List<List<String>> result = new ArrayList<>();
-        for(HashMap<Character, Integer> list: groupedMap.keySet()) {
+        for(String list: groupedMap.keySet()) {
             result.add(groupedMap.get(list));
         }
         return result;
-    }
-
-    static HashMap<Character, Integer> getFrequencyCount(String s) {
-        HashMap<Character, Integer> frequencyCount = new HashMap<>();
-        for(char c : s.toCharArray()) {
-            frequencyCount.put(c, frequencyCount.getOrDefault(c, 0) + 1);
-        }
-        return frequencyCount;
     }
 }
