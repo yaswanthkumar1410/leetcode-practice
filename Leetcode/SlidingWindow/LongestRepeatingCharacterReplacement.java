@@ -1,50 +1,40 @@
+import java.util.HashMap;
 
 public class LongestRepeatingCharacterReplacement {
 
     public static void main(String[] args) {
-        ListNode t1 = buildList(new int[]{1,2,3,4,5});
-        printList(reverseList(t1)); // 5 4 3 2 1
-
-        ListNode t2 = buildList(new int[]{1,2});
-        printList(reverseList(t2)); // 2 1
-
-        printList(reverseList(null)); // (empty)
-    }
-
-    static class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int val) { this.val = val; }
+        System.out.println(characterReplacement("ABAB", 2));    // 4
+        System.out.println(characterReplacement("AABABBA", 1)); // 4
+        System.out.println(characterReplacement("AAAA", 0));    // 4
+        System.out.println(characterReplacement("ABCDE", 1));   // 2
     }
 
     // ============================================
-    // LC 206 — Reverse Linked List
+    // LC 424 — Longest Repeating Character Replacement
     // ============================================
-    // Given the head of a singly linked list, reverse
-    // the list, and return the reversed list.
+    // Given a string s and an integer k, you can replace
+    // at most k characters. Return the length of the
+    // longest substring containing all the same letter
+    // after at most k replacements.
     // ============================================
-    static ListNode reverseList(ListNode head) {
+    static int characterReplacement(String s, int k) {
         // your code here
-        ListNode result = null;
-        while(head != null) {
-            ListNode temp1 = head.next;
-            head.next = result;
-            result = head;
-            head = temp1;
+        HashMap<Character, Integer> hashMap = new HashMap<>();
+        int left = 0;
+        int right = 0;
+        int maxfreq = 0;
+        int result = 0;
+        while(right < s.length()){
+            hashMap.put(s.charAt(right), hashMap.getOrDefault(s.charAt(right), 0) + 1);
+            maxfreq = Math.max(maxfreq, hashMap.get(s.charAt(right)));
+            while(right - left + 1 - maxfreq > k) {
+                hashMap.put(s.charAt(left), hashMap.get(s.charAt(left)) - 1);
+                maxfreq = Math.max(maxfreq, hashMap.get(s.charAt(right)));
+                left++;
+            }
+            result = Math.max(result, right - left + 1);
+            right++;
         }
         return result;
-    }
-
-    static ListNode buildList(int[] vals) {
-        ListNode dummy = new ListNode(0);
-        ListNode curr = dummy;
-        for (int v : vals) { curr.next = new ListNode(v); curr = curr.next; }
-        return dummy.next;
-    }
-
-    static void printList(ListNode head) {
-        StringBuilder sb = new StringBuilder();
-        while (head != null) { sb.append(head.val).append(" "); head = head.next; }
-        System.out.println(sb.toString().trim());
     }
 }
